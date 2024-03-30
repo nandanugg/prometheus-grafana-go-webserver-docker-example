@@ -19,4 +19,4 @@ export ENV=development
 > ⚠️ Do not use `.env` file, set your own environment variable in your machine to mimic the production env, or just use `dotenv` or `autoenv`
 
 ### Commands that you can run
-go see (makefile)[makefile]
+go see [makefile](makefile)
