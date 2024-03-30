@@ -1,13 +1,29 @@
+# `make run` only run only the backend server
 .PHONY: run
+
+# `make runDockerCompose` run the backend server, prometheus and grafana with docker-compose
 .PHONY: runDockerCompose
+
+# `make runDockerComposeBuildBackendService` rebuild and run the backend server, prometheus and grafana with docker-compose
 .PHONY: runDockerComposeBuildBackendService
+
+# `make resetGrafana` reset the grafana dashboard
 .PHONY: resetGrafana
-.PHONY: exportGrafana
-.PHONY: importGrafana 
+
+# `make runDb` run the postgres database via docker
 .PHONY: runDb
+
+# `make migrateNew` create a new migration
 .PHONY: migrateNew
+
+# `make migrateUp` apply the migrations
 .PHONY: migrateUp
+
+# `make migrateDown` rollback the migrations
 .PHONY: migrateDown
+
+# BEFORE STARTING
+# Make sure you already run `make runDb` and `make migrateUp` before running the application
 
 run:
 	@echo "Running the application..."
@@ -26,19 +42,6 @@ resetGrafana:
 	docker-compose rm -f grafana
 	docker volume rm -f prometheusgrafanaexample_grafana_data
 
-exportGrafana:
-	@echo "Exporting Grafana dashboard..."
-	mkdir -p data_sources && curl -s "http://localhost:3000/api/datasources"  -u admin:admin|jq -c -M '.[]'|split -l 1 - data_sources/
-
-importGrafana:
-	@echo "Importing Grafana dashboard..."
-	for i in data_sources/*; do \
-		curl -X "POST" "http://localhost:3000/api/datasources" \
-		-H "Content-Type: application/json" \
-		--user admin:admin \
-		--data-binary @$i
-	done
-	
 runDb:
 	@echo "Creating database..."
 	docker run --rm -e POSTGRES_DB=postgres -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:16-alpine
