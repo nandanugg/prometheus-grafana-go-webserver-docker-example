@@ -16,3 +16,4 @@ export DB_PASSWORD=
 export DB_PARAMS="sslmode=disable"
 export ENV=development
 ```
+> ⚠️ Do not use `.env` file, set your own environment variable in your machine to mimic the production env, or just use `dotenv` or `autoenv`
